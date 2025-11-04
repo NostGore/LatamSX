@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LatamSX - Categoría</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- El encabezado se carga dinámicamente desde header.js -->
+    
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <div class="container">
+            <div id="loading" class="loading-category">
+                <i class="fas fa-spinner"></i>
+                <p>Cargando categoría...</p>
+            </div>
+
+            <div id="error" class="error-category" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Categoría no encontrada</h2>
+                <p>La categoría que buscas no existe o ha sido eliminada.</p>
+            </div>
+
+            <div id="category-content" style="display: none;">
+                <div class="category-header">
+                    <h1 id="category-title" class="category-title"></h1>
+                    <p id="category-count" class="category-count"></p>
+                </div>
+
+                <div class="content-wrapper">
+                    <!-- Columna Principal -->
+                    <div class="main-column">
+                        <div id="category-topics-list" class="topics-list">
+                            <!-- Los temas se generarán aquí dinámicamente -->
+                        </div>
+                        <!-- Paginación -->
+                        <div class="category-pagination" id="category-pagination" style="display: none;">
+                            <button class="pagination-btn" id="prev-page-btn" onclick="changePage(-1)">
+                                <i class="fas fa-chevron-left"></i>
+                                <span>Anterior</span>
+                            </button>
+                            <span class="pagination-info" id="pagination-info"></span>
+                            <button class="pagination-btn" id="next-page-btn" onclick="changePage(1)">
+                                <span>Siguiente</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <aside class="sidebar">
+                        <div class="sidebar-section">
+                            <div class="topics-header">
+                                <h3 class="topics-title">Otros temas</h3>
+                            </div>
+                            <div id="recent-videos" class="recent-list">
+                                <!-- Se generará dinámicamente -->
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 LatamSX - Foro de Videos</p>
+        </div>
+    </footer>
+
+    <script src="../database/mediaDB.js"></script>
+    <script src="../Js/header.js"></script>
+    <script>
+        // Obtener el nombre de la categoría de la URL
+        function getCategoryFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('category');
+        }
+
+        // Variables globales
+        let databaseVideos = [];
+        let categoryVideos = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        // Cargar base de datos desde mediaDB.js
+        if (typeof window !== 'undefined' && window.mediaDB) {
+            databaseVideos = window.mediaDB;
+            console.log(`✅ Base de datos cargada: ${databaseVideos.length} videos`);
+        } else {
+            console.warn('⚠️ No se pudo cargar la base de datos. Asegúrate de que mediaDB.js esté cargado.');
+        }
+
+        // Función para escapar HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Convertir video de la base de datos al formato de tema
+        function convertVideoToTopic(video) {
+            if (!video || !video.videoId || !video.titlePostSingle) {
+                return null;
+            }
+            
+            const categories = (video.categorias && Array.isArray(video.categorias)) 
+                ? video.categorias.map(c => c && c.categoria ? c.categoria : '').filter(c => c).slice(0, 3)
+                : [];
+            const views = parseInt(video.vistas) || 0;
+            const fecha = video.fecha ? video.fecha.trim() : 'Fecha no disponible';
+            
+            return {
+                id: video.videoId,
+                title: video.titlePostSingle,
+                categories: categories,
+                author: 'LatamSX',
+                date: fecha,
+                views: views
+            };
+        }
+
+
+        // Filtrar videos por categoría (usando solo el identificador "categoria")
+        function filterVideosByCategory(categorySlug) {
+            // Verificar que la base de datos esté cargada
+            if (!databaseVideos) {
+                console.error('❌ databaseVideos no está definido');
+                return [];
+            }
+            
+            if (!Array.isArray(databaseVideos)) {
+                console.error('❌ databaseVideos no es un array:', typeof databaseVideos);
+                return [];
+            }
+            
+            if (databaseVideos.length === 0) {
+                console.warn('⚠️ No hay videos en la base de datos para filtrar');
+                return [];
+            }
+
+            // Normalizar el identificador de la categoría para comparación
+            const normalizedCategorySlug = String(categorySlug).toLowerCase().trim();
+            
+            console.log(`=== FILTRANDO POR CATEGORÍA ===`);
+            console.log(`Categoría (slug) buscada: "${categorySlug}"`);
+            console.log(`Categoría normalizada: "${normalizedCategorySlug}"`);
+            console.log(`📊 Total de videos en BD: ${databaseVideos.length}`);
+
+            const filtered = [];
+            let videosSinCategorias = 0;
+            let videosConCategorias = 0;
+            let matchCount = 0;
+            let videosConCategoriaVacia = 0;
+            let videosInvalidos = 0;
+
+            // Iterar sobre TODOS los videos sin límites
+            const totalVideos = databaseVideos.length;
+            console.log(`🔄 Procesando ${totalVideos} videos...`);
+            
+            for (let i = 0; i < totalVideos; i++) {
+                const video = databaseVideos[i];
+                
+                // Verificar que el video sea válido
+                if (!video || typeof video !== 'object') {
+                    videosInvalidos++;
+                    continue;
+                }
+
+                // Verificar que tenga categorías
+                if (!video.categorias) {
+                    videosSinCategorias++;
+                    continue;
+                }
+                
+                if (!Array.isArray(video.categorias)) {
+                    videosSinCategorias++;
+                    continue;
+                }
+                
+                if (video.categorias.length === 0) {
+                    videosSinCategorias++;
+                    continue;
+                }
+
+                videosConCategorias++;
+                
+                // Verificar si alguna categoría coincide SOLO por el identificador "categoria"
+                let matches = false;
+                
+                for (let j = 0; j < video.categorias.length; j++) {
+                    const cat = video.categorias[j];
+                    
+                    if (!cat || typeof cat !== 'object') {
+                        continue;
+                    }
+                    
+                    // Verificar si existe el campo "categoria"
+                    if (!cat.categoria) {
+                        videosConCategoriaVacia++;
+                        continue;
+                    }
+                    
+                    // Comparar SOLO por 'categoria' (el identificador) - normalizar ambos
+                    const catSlug = String(cat.categoria).toLowerCase().trim();
+                    
+                    if (catSlug === normalizedCategorySlug) {
+                        matchCount++;
+                        if (matchCount <= 5) { // Solo loguear los primeros 5 para no saturar
+                            console.log(`✓ Video "${video.titlePostSingle || 'Sin título'}" coincide - catSlug: "${catSlug}"`);
+                        }
+                        matches = true;
+                        break; // Encontramos una coincidencia, no necesitamos seguir buscando en este video
+                    }
+                }
+                
+                if (matches) {
+                    filtered.push(video);
+                }
+                
+                // Mostrar progreso cada 1000 videos
+                if ((i + 1) % 1000 === 0) {
+                    console.log(`📈 Procesados ${i + 1}/${totalVideos} videos...`);
+                }
+            }
+            
+            console.log(`📊 === ESTADÍSTICAS DE FILTRADO ===`);
+            console.log(`Total videos procesados: ${totalVideos}`);
+            console.log(`Videos válidos: ${totalVideos - videosInvalidos}`);
+            console.log(`Videos con categorías: ${videosConCategorias}`);
+            console.log(`Videos sin categorías: ${videosSinCategorias}`);
+            console.log(`Videos inválidos: ${videosInvalidos}`);
+            console.log(`Videos con categoría vacía/null: ${videosConCategoriaVacia}`);
+            console.log(`✅ Coincidencias encontradas: ${matchCount}`);
+            console.log(`📋 Videos filtrados totales: ${filtered.length}`);
+            console.log(`Videos encontrados para "${categorySlug}": ${filtered.length}`);
+            console.log(`=== FIN FILTRADO ===`);
+            
+            // Si no se encontraron resultados, mostrar un mensaje de ayuda
+            if (filtered.length === 0) {
+                console.warn(`⚠️ No se encontraron videos con categoría "${categorySlug}"`);
+                console.log(`💡 Sugerencia: Verifica que el identificador de categoría sea correcto (debe ser el campo "categoria", no "nombre")`);
+                console.log(`💡 Categorías encontradas en BD (ejemplos):`);
+                // Mostrar algunas categorías de ejemplo
+                const sampleCategories = new Set();
+                for (let i = 0; i < Math.min(100, databaseVideos.length); i++) {
+                    const v = databaseVideos[i];
+                    if (v && v.categorias && Array.isArray(v.categorias)) {
+                        v.categorias.forEach(cat => {
+                            if (cat && cat.categoria) {
+                                sampleCategories.add(cat.categoria);
+                            }
+                        });
+                    }
+                }
+                console.log(Array.from(sampleCategories).slice(0, 10));
+            }
+            
+            return filtered;
+        }
+
+        // Obtener el nombre de la categoría para mostrar (buscar por "categoria" y devolver "nombre")
+        function getCategoryDisplayName(categorySlug) {
+            // Buscar el nombre de la categoría en la base de datos usando el identificador "categoria"
+            for (const video of databaseVideos) {
+                if (video.categorias && Array.isArray(video.categorias)) {
+                    const category = video.categorias.find(cat => 
+                        cat && cat.categoria && (cat.categoria || '').toLowerCase() === categorySlug.toLowerCase()
+                    );
+                    if (category && category.nombre) {
+                        return category.nombre;
+                    }
+                }
+            }
+            // Si no se encuentra, devolver el slug con primera letra mayúscula como fallback
+            return categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1);
+        }
+
+        // Mostrar error
+        function showError(message) {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const contentEl = document.getElementById('category-content');
+            
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (errorEl) {
+                errorEl.style.display = 'block';
+                const errorMsg = errorEl.querySelector('p');
+                if (errorMsg && message) {
+                    errorMsg.textContent = message;
+                }
+            }
+            if (contentEl) contentEl.style.display = 'none';
+        }
+
+        // Renderizar temas de la categoría (con paginación)
+        function renderCategoryTopics() {
+            const topicsList = document.getElementById('category-topics-list');
+            const paginationEl = document.getElementById('category-pagination');
+            if (!topicsList) return;
+            
+            if (categoryVideos.length === 0) {
+                topicsList.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; color: #b0b0b0;">
+                        <p>No hay temas en esta categoría</p>
+                    </div>
+                `;
+                if (paginationEl) paginationEl.style.display = 'none';
+                return;
+            }
+            
+            const allTopics = categoryVideos.map(convertVideoToTopic).filter(t => t !== null);
+            
+            if (allTopics.length === 0) {
+                topicsList.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; color: #b0b0b0;">
+                        <p>No hay temas válidos para mostrar</p>
+                    </div>
+                `;
+                if (paginationEl) paginationEl.style.display = 'none';
+                return;
+            }
+            
+            // Calcular paginación
+            const totalPages = Math.ceil(allTopics.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentTopics = allTopics.slice(startIndex, endIndex);
+            
+            // Renderizar temas de la página actual
+            topicsList.innerHTML = currentTopics.map(topic => {
+                // Mostrar solo las primeras 3 categorías
+                const displayCategories = topic.categories.slice(0, 3);
+                const categoriesHTML = displayCategories.map((cat, index) => 
+                    `<span class="category-tag">${escapeHtml(cat)}</span>${index < displayCategories.length - 1 ? '<span class="category-separator">|</span>' : ''}`
+                ).join('');
+                
+                return `
+                <div class="topic-item">
+                    <div class="topic-left">
+                        <div class="topic-info">
+                            <div class="categories-container">
+                                ${categoriesHTML}
+                            </div>
+                            <h3 class="topic-title">
+                                <i class="fas fa-arrow-right topic-arrow"></i>
+                                <a href="foro.html?id=${escapeHtml(topic.id)}">${escapeHtml(topic.title)}</a>
+                            </h3>
+                            <div class="topic-meta">
+                                <span class="author">${escapeHtml(topic.author)}</span>
+                                <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Icon" class="author-icon">
+                                <span>•</span>
+                                <span class="date-info">
+                                    <i class="fas fa-calendar"></i>
+                                    ${escapeHtml(topic.date)}
+                                </span>
+                                <span class="views-separator">•</span>
+                                <span class="views-count">
+                                    <i class="fas fa-eye"></i>
+                                    ${topic.views}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+            
+            // Mostrar/ocultar paginación
+            if (paginationEl) {
+                if (totalPages > 1) {
+                    paginationEl.style.display = 'flex';
+                    updatePaginationControls(totalPages);
+                } else {
+                    paginationEl.style.display = 'none';
+                }
+            }
+        }
+        
+        // Actualizar controles de paginación
+        function updatePaginationControls(totalPages) {
+            const prevBtn = document.getElementById('prev-page-btn');
+            const nextBtn = document.getElementById('next-page-btn');
+            const infoEl = document.getElementById('pagination-info');
+            
+            // Habilitar/deshabilitar botones
+            if (prevBtn) {
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.style.opacity = currentPage === 1 ? '0.5' : '1';
+                prevBtn.style.cursor = currentPage === 1 ? 'not-allowed' : 'pointer';
+            }
+            
+            if (nextBtn) {
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.style.opacity = currentPage === totalPages ? '0.5' : '1';
+                nextBtn.style.cursor = currentPage === totalPages ? 'not-allowed' : 'pointer';
+            }
+            
+            // Mostrar información de página
+            if (infoEl) {
+                const startIndex = (currentPage - 1) * itemsPerPage + 1;
+                const endIndex = Math.min(currentPage * itemsPerPage, categoryVideos.length);
+                infoEl.textContent = `Página ${currentPage} de ${totalPages} (${startIndex}-${endIndex} de ${categoryVideos.length})`;
+            }
+        }
+        
+        // Cambiar de página
+        function changePage(direction) {
+            const totalPages = Math.ceil(categoryVideos.length / itemsPerPage);
+            const newPage = currentPage + direction;
+            
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderCategoryTopics();
+                // Scroll al inicio de la lista
+                const topicsList = document.getElementById('category-topics-list');
+                if (topicsList) {
+                    topicsList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+        // Renderizar otros temas (temas aleatorios para el sidebar)
+        function renderRecentVideos() {
+            const recentVideosContainer = document.getElementById('recent-videos');
+            if (!recentVideosContainer) return;
+            
+            if (databaseVideos.length === 0) {
+                recentVideosContainer.innerHTML = `
+                    <p style="color: #666; font-size: 0.9rem;">No hay temas disponibles</p>
+                `;
+                return;
+            }
+            
+            // Obtener temas aleatorios, excluyendo los que ya están en la categoría
+            const categoryVideoIds = new Set(categoryVideos.map(v => v.videoId));
+            const filteredVideos = databaseVideos.filter(video => !categoryVideoIds.has(video.videoId));
+            
+            // Mezclar aleatoriamente
+            const shuffled = [...filteredVideos].sort(() => Math.random() - 0.5);
+            const randomVideos = shuffled.slice(0, Math.min(10, shuffled.length));
+            const topics = randomVideos.map(convertVideoToTopic).filter(t => t !== null);
+            
+            if (topics.length === 0) {
+                recentVideosContainer.innerHTML = `
+                    <p style="color: #666; font-size: 0.9rem;">No hay temas recientes</p>
+                `;
+                return;
+            }
+            
+            recentVideosContainer.innerHTML = topics.map(topic => {
+                return `
+                    <div class="recent-topic-item">
+                        <h4 class="recent-topic-title">
+                            <a href="foro.html?id=${escapeHtml(topic.id)}">${escapeHtml(topic.title)}</a>
+                        </h4>
+                        <div class="recent-topic-meta">
+                            <span class="recent-author">${escapeHtml(topic.author)}</span>
+                            <span class="recent-separator">•</span>
+                            <span class="recent-date">${escapeHtml(topic.date)}</span>
+                            <span class="recent-separator">•</span>
+                            <span class="recent-views">
+                                <i class="fas fa-eye"></i>
+                                ${topic.views}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Cargar y mostrar la categoría
+        async function loadCategory() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const contentEl = document.getElementById('category-content');
+            const categoryName = getCategoryFromURL();
+
+            if (!categoryName) {
+                showError('No se especificó una categoría');
+                return;
+            }
+
+            try {
+                console.log(`=== CARGA DE CATEGORÍA ===`);
+                console.log(`Categoría desde URL: "${categoryName}"`);
+                
+                // Decodificar el parámetro de la URL si está codificado
+                const decodedCategoryName = decodeURIComponent(categoryName);
+                console.log(`Categoría decodificada: "${decodedCategoryName}"`);
+                
+                // Verificar que la base de datos se cargó correctamente
+                if (!databaseVideos || databaseVideos.length === 0) {
+                    console.error('❌ La base de datos está vacía');
+                    showError('Error: No hay videos disponibles');
+                    return;
+                }
+                
+                console.log(`📊 Total de videos en BD: ${databaseVideos.length}`);
+                
+                // Filtrar videos por categoría
+                categoryVideos = filterVideosByCategory(decodedCategoryName);
+                
+                console.log(`✅ Total videos filtrados: ${categoryVideos.length}`);
+                
+                // Mostrar estadísticas de categorías encontradas
+                if (categoryVideos.length > 0) {
+                    const sampleVideo = categoryVideos[0];
+                    if (sampleVideo && sampleVideo.categorias) {
+                        console.log(`📋 Ejemplo de categorías del primer video:`, sampleVideo.categorias);
+                    }
+                }
+                
+                if (categoryVideos.length === 0) {
+                    console.warn(`⚠ No se encontraron videos para la categoría "${decodedCategoryName}"`);
+                    console.log(`Intenta verificar que la categoría existe en la base de datos`);
+                    showError(`No se encontraron temas en la categoría "${decodedCategoryName}"`);
+                    return;
+                }
+
+                // Obtener el nombre de la categoría para mostrar
+                const displayName = getCategoryDisplayName(decodedCategoryName);
+
+                // Mostrar el título y conteo
+                const titleEl = document.getElementById('category-title');
+                const countEl = document.getElementById('category-count');
+                
+                if (titleEl) {
+                    titleEl.textContent = displayName;
+                }
+                
+                if (countEl) {
+                    countEl.textContent = `${categoryVideos.length} ${categoryVideos.length === 1 ? 'tema' : 'temas'}`;
+                }
+
+                // Resetear a la primera página
+                currentPage = 1;
+                
+                // Renderizar contenido
+                renderCategoryTopics();
+                renderRecentVideos();
+
+                // Mostrar el contenido
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (errorEl) errorEl.style.display = 'none';
+                if (contentEl) contentEl.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error cargando la categoría:', error);
+                showError('Error al cargar la categoría');
+            }
+        }
+
+        // Cargar cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategory();
+        });
+    </script>
+    <style>
+        .loading-category, .error-category {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--yellow);
+        }
+
+        .loading-category i, .error-category i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .loading-category i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .error-category {
+            color: #999;
+        }
+
+        .category-header {
+            margin-bottom: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--yellow);
+        }
+
+        .category-title {
+            color: var(--orange);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-count {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Paginación */
+        .category-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-top: 2px solid var(--yellow);
+        }
+
+        .pagination-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--dark-gray);
+            border: 2px solid var(--yellow);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--yellow);
+            color: var(--black);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-btn i {
+            color: var(--orange);
+            transition: color 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) i {
+            color: var(--black);
+        }
+
+        .pagination-info {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .category-pagination {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem 0;
+            }
+
+            .pagination-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .pagination-info {
+                order: -1;
+            }
+        }
+    </style>
+</body>
+</html>
+

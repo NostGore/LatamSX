@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LatamSX - Ver Tema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .error-message {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .error-message i {
+            font-size: 4rem;
+            color: var(--yellow);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--yellow);
+        }
+
+        .loading i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Layout de dos columnas */
+        .forum-content-wrapper {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Cuadro vertical izquierdo */
+        .left-panel {
+            background: var(--dark-gray);
+            border: 2px solid var(--yellow);
+            border-radius: 0;
+            padding: 1.5rem;
+            min-height: 400px;
+        }
+
+        /* Cuadro horizontal derecho */
+        .right-panel {
+            background: var(--dark-gray);
+            border: 2px solid var(--yellow);
+            border-radius: 0;
+            padding: 1.5rem;
+            min-height: 264px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Cuadro horizontal superior dentro del panel derecho */
+        .top-horizontal-box {
+            background: var(--black);
+            border: 2px solid var(--yellow);
+            border-radius: 0;
+            padding: 0.4rem 1.5rem;
+            min-height: 35px;
+        }
+
+        /* Reproductor de video */
+        .video-player-container {
+            width: 100%;
+            background: #000;
+            border: 2px solid var(--yellow);
+            border-radius: 0;
+            overflow: hidden;
+            position: relative;
+            min-height: 400px;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio por defecto para videos horizontales */
+        }
+
+        /* Video vertical (9:16) - ahora siempre horizontal */
+        .video-player-container.vertical {
+            padding-bottom: 56.25%; /* Mismo aspect ratio que horizontal */
+            height: 0;
+            display: block;
+        }
+
+        .video-player-container.vertical iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0px none #ffffff;
+        }
+
+        .video-player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0px none #ffffff;
+        }
+
+        /* Botones de control del video */
+        .video-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        .video-controls-left,
+        .video-controls-right {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .video-control-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--dark-gray);
+            border: 2px solid var(--yellow);
+            border-radius: 0;
+            color: var(--white);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .video-control-btn:hover {
+            background: var(--yellow);
+            color: var(--black);
+        }
+
+        .video-control-btn i {
+            color: var(--orange);
+            transition: color 0.3s ease;
+        }
+
+        .video-control-btn:hover i {
+            color: var(--black);
+        }
+
+        .author-profile {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            padding-top: 1rem;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--yellow);
+        }
+
+        .author-info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            justify-content: center;
+        }
+
+        .author-info-row i {
+            color: var(--orange);
+        }
+
+        .author-name {
+            color: var(--white);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .author-verified {
+            width: 16px;
+            height: 16px;
+        }
+
+        .divider-line {
+            width: 100%;
+            height: 1px;
+            background: var(--yellow);
+            margin: 1.5rem 0;
+        }
+
+        .video-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--white);
+        }
+
+        .stat-item i {
+            color: var(--orange);
+            width: 16px;
+        }
+
+        .categories-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .categories-row i {
+            color: var(--orange);
+        }
+
+        .video-categories-list {
+            display: flex;
+            gap: 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .video-category-tag {
+            color: var(--white);
+            font-size: 0.85rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .video-category-tag:hover {
+            color: var(--yellow);
+        }
+
+        .category-separator-comma {
+            color: var(--white);
+            margin: 0 0.2rem;
+        }
+
+                /* Título del video */
+                .video-title-container {
+                    max-width: 1400px;
+                    margin: 0 auto 1.5rem auto;
+                    padding: 0 1.5rem;
+                }
+                
+                @media (max-width: 968px) {
+                    .video-title-container {
+                        padding: 0 0.5rem;
+                    }
+                }
+
+                .video-title {
+                    color: var(--orange);
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    margin: 0;
+                    line-height: 1.4;
+                }
+
+                /* Información del video para móvil */
+                .video-mobile-info {
+                    display: none;
+                    padding: 1rem 1.5rem;
+                }
+
+                .video-mobile-author {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                    margin-bottom: 0.8rem;
+                }
+
+                .video-mobile-author i {
+                    color: var(--orange);
+                }
+
+                .video-mobile-author .author-name {
+                    color: var(--white);
+                    font-weight: 500;
+                }
+
+                .video-mobile-author .author-verified {
+                    width: 14px;
+                    height: 14px;
+                }
+
+                .video-mobile-author .separator {
+                    color: var(--white);
+                    margin: 0 0.5rem;
+                }
+
+                .video-mobile-author .date {
+                    color: var(--white);
+                }
+
+                .video-mobile-tags {
+                    display: flex;
+                    align-items: center;
+                    gap: 0;
+                    font-size: 0.85rem;
+                    flex-wrap: wrap;
+                }
+
+                .video-mobile-tags i {
+                    color: var(--orange);
+                }
+
+                .video-mobile-tags .tag {
+                    color: var(--white) !important;
+                    background: none !important;
+                    border: none !important;
+                    padding: 0 !important;
+                    border-radius: 0 !important;
+                    font-weight: 400 !important;
+                    text-transform: none !important;
+                    cursor: pointer;
+                    text-decoration: none;
+                    transition: color 0.3s ease;
+                }
+                
+                .video-mobile-tags .tag:hover {
+                    color: var(--yellow) !important;
+                }
+
+                .video-mobile-tags .tag-separator {
+                    color: var(--white);
+                    margin: 0 0.2rem;
+                }
+
+                /* Sección de temas relacionados */
+                .related-topics-section {
+                    max-width: 1400px;
+                    margin: 2rem auto 0 auto;
+                    background: var(--dark-gray);
+                    border-radius: 0;
+                    border: 2px solid var(--yellow);
+                    overflow: hidden;
+                }
+
+                @media (max-width: 968px) {
+                    .forum-content-wrapper {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .left-panel {
+                        display: none;
+                    }
+                    
+                    .top-horizontal-box {
+                        display: none;
+                    }
+                    
+                    .video-mobile-info {
+                        display: block;
+                    }
+                    
+                    .video-player-container {
+                        width: 100%;
+                        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+                        min-height: auto;
+                    }
+                    
+                    .video-player-container.vertical {
+                        padding-bottom: 56.25%; /* Siempre 16:9 aspect ratio */
+                        height: 0;
+                    }
+                    
+                    .video-player-container iframe {
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                    
+                    .right-panel {
+                        padding: 0;
+                    }
+                    
+                    .video-control-btn {
+                        padding: 0.4rem 0.8rem;
+                        font-size: 0.75rem;
+                        gap: 0.3rem;
+                    }
+                    
+                    .video-control-btn span {
+                        font-size: 0.75rem;
+                    }
+                    
+                    .video-control-btn i {
+                        font-size: 0.8rem;
+                    }
+                }
+    </style>
+</head>
+<body>
+    <!-- El encabezado se carga dinámicamente desde header.js -->
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <div class="container">
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Cargando video...</p>
+            </div>
+
+            <div id="error" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Video no encontrado</h2>
+                <p>El video que buscas no existe o ha sido eliminado.</p>
+            </div>
+
+                    <div id="video-content" style="display: none;">
+                        <div class="video-title-container" id="video-title-container">
+                            <!-- El título se mostrará aquí -->
+                        </div>
+                        <div class="video-mobile-info" id="video-mobile-info">
+                            <!-- Información móvil se mostrará aquí -->
+                        </div>
+                        <div class="forum-content-wrapper">
+                            <!-- Cuadro vertical izquierdo -->
+                            <div class="left-panel" id="left-panel">
+                                <!-- Contenido del panel izquierdo -->
+                            </div>
+
+                            <!-- Cuadro horizontal derecho -->
+                            <div class="right-panel" id="right-panel">
+                                <!-- Contenido del panel derecho -->
+                            </div>
+                        </div>
+                        <!-- Sección: Podría interesarte -->
+                        <div class="related-topics-section">
+                            <div class="topics-header">
+                                <h2 class="topics-title">Podría interesarte</h2>
+                            </div>
+                            <div id="related-topics-list" class="topics-list">
+                                <!-- Los temas se generarán aquí dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 LatamSX - Foro de Videos</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Resultados de Búsqueda -->
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-overlay" id="search-modal-overlay"></div>
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h2>Resultados</h2>
+                <button class="search-modal-close" id="search-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-modal-body" id="search-results">
+                <!-- Los resultados se mostrarán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../Js/search.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        // Obtener el ID del video de la URL
+        function getVideoIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // Cargar y mostrar el video
+        async function loadVideo() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const contentEl = document.getElementById('video-content');
+            const videoId = getVideoIdFromURL();
+
+            if (!videoId) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                // Obtener videos disponibles desde mediaDB
+                let allVideos = [];
+                
+                if (typeof window !== 'undefined' && window.mediaDB) {
+                    allVideos = window.mediaDB;
+                    console.log(`✅ Base de datos cargada: ${allVideos.length} videos`);
+                } else {
+                    console.warn('⚠️ No se pudo cargar la base de datos');
+                }
+                
+                if (allVideos.length === 0) {
+                    throw new Error('No hay videos disponibles');
+                }
+                
+                // Guardar todos los videos para navegación
+                allVideosList = allVideos;
+                
+                // Buscar el video por ID
+                const video = allVideos.find(v => v && v.videoId === videoId);
+
+                if (!video) {
+                    loadingEl.style.display = 'none';
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                // Cargar y guardar historial
+                loadHistory();
+
+                // Mostrar el video
+                displayVideo(video, allVideos);
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error cargando el video:', error);
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // Mostrar el video
+        function displayVideo(video, allVideos) {
+            const leftPanel = document.getElementById('left-panel');
+            const rightPanel = document.getElementById('right-panel');
+            const titleContainer = document.getElementById('video-title-container');
+            
+            // Obtener categorías (con nombre y categoria para la URL)
+            const categories = video.categorias ? video.categorias.slice(0, 3) : [];
+            const categoriesHTML = categories.length > 0 
+                ? `<div class="video-categories-list">
+                    ${categories.map((cat, index) => {
+                        const categoryName = cat.categoria || '';
+                        const categorySlug = cat.categoria || categoryName.toLowerCase();
+                        return `<a href="category.html?category=${encodeURIComponent(categorySlug)}" class="video-category-tag">${escapeHtml(categoryName)}</a>${index < categories.length - 1 ? '<span class="category-separator-comma">,</span>' : ''}`;
+                    }).join('')}
+                   </div>`
+                : '<span style="color: #999;">Sin categorías</span>';
+            
+            // Obtener fecha y vistas
+            const fecha = video.fecha || 'Fecha no disponible';
+            const vistas = parseInt(video.vistas) || 0;
+            
+            // Mostrar el título del video
+            if (titleContainer) {
+                titleContainer.innerHTML = `
+                    <h1 class="video-title">${escapeHtml(video.titlePostSingle || 'Sin título')}</h1>
+                `;
+            }
+            
+            // Mostrar información móvil
+            const mobileInfo = document.getElementById('video-mobile-info');
+            if (mobileInfo) {
+                const fecha = video.fecha || 'Fecha no disponible';
+                const categories = video.categorias ? video.categorias.slice(0, 3) : [];
+                const categoriesHTML = categories.length > 0 
+                    ? categories.map((cat, index) => {
+                        const categoryName = cat.categoria || '';
+                        const categorySlug = cat.categoria || categoryName.toLowerCase();
+                        return `<a href="category.html?category=${encodeURIComponent(categorySlug)}" class="tag">${escapeHtml(categoryName)}</a>${index < categories.length - 1 ? '<span class="tag-separator">,</span>' : ''}`;
+                    }).join('')
+                    : '<span class="tag">Sin categorías</span>';
+                
+                mobileInfo.innerHTML = `
+                    <div class="video-mobile-author">
+                        <i class="fas fa-user"></i>
+                        <span class="author-name">LatamSX</span>
+                        <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="author-verified">
+                        <span class="separator">•</span>
+                        <span class="date">${escapeHtml(fecha)}</span>
+                    </div>
+                    <div class="video-mobile-tags">
+                        <i class="fas fa-tag"></i>
+                        ${categoriesHTML}
+                    </div>
+                `;
+            }
+            
+            // Mostrar información del autor en el panel izquierdo (vertical) - sin categorías
+            leftPanel.innerHTML = `
+                <div class="author-profile">
+                    <img src="img.jpg" alt="LatamSX" class="author-avatar" onerror="this.src='https://via.placeholder.com/80'">
+                    <div class="author-info-row">
+                        <i class="fas fa-user"></i>
+                        <span class="author-name">LatamSX</span>
+                        <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="author-verified">
+                    </div>
+                    <div class="divider-line"></div>
+                    <div class="video-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>${escapeHtml(fecha)}</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>${vistas} vistas</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Detectar si el video es vertical o horizontal basándose en la imagen de portada
+            function detectVideoOrientation(imgUrl, callback) {
+                if (!imgUrl) {
+                    callback(false); // Por defecto, horizontal
+                    return;
+                }
+                
+                const img = new Image();
+                img.onload = function() {
+                    const isVertical = img.height > img.width;
+                    callback(isVertical);
+                };
+                img.onerror = function() {
+                    callback(false); // Por defecto, horizontal si hay error
+                };
+                img.src = imgUrl;
+            }
+            
+            // Mostrar cuadro horizontal superior con tags y video en el panel derecho
+            if (video.mp4Url) {
+                detectVideoOrientation(video.jpgUrl, (isVertical) => {
+                    const containerClass = isVertical ? 'video-player-container vertical' : 'video-player-container';
+                    const videoHTML = `<div class="${containerClass}">
+                        <iframe name="LatamSX" width="100%" height="100%" src="${video.mp4Url}" scrolling="no" marginwidth="0" marginheight="0" style="border:0px none #ffffff;"></iframe>
+                       </div>`;
+                    
+                    const controlsHTML = `
+                        <div class="video-controls">
+                            <div class="video-controls-left">
+                                <button class="video-control-btn" onclick="navigateVideo('prev')">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Atrás</span>
+                                </button>
+                                <button class="video-control-btn" onclick="navigateVideo('next')">
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span>Siguiente</span>
+                                </button>
+                            </div>
+                            <div class="video-controls-right">
+                                <button class="video-control-btn" onclick="toggleFavorite()">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Favoritos</span>
+                                </button>
+                                <button class="video-control-btn" onclick="shareVideo()">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Compartir</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    rightPanel.innerHTML = `
+                        <div class="top-horizontal-box">
+                            <div class="categories-row">
+                                <i class="fas fa-tag"></i>
+                                ${categoriesHTML}
+                            </div>
+                        </div>
+                        ${videoHTML}
+                        ${controlsHTML}
+                    `;
+                });
+            } else {
+                const videoHTML = video.jpgUrl 
+                    ? `<div class="video-player-container">
+                        <img src="${video.jpgUrl}" alt="${escapeHtml(video.titlePostSingle)}" style="width: 100%; height: auto; display: block;">
+                       </div>`
+                    : '<p style="color: #999;">Video no disponible</p>';
+                
+                const controlsHTML = `
+                    <div class="video-controls">
+                        <div class="video-controls-left">
+                            <button class="video-control-btn" onclick="navigateVideo('prev')">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Atrás</span>
+                            </button>
+                            <button class="video-control-btn" onclick="navigateVideo('next')">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Siguiente</span>
+                            </button>
+                        </div>
+                        <div class="video-controls-right">
+                            <button class="video-control-btn" onclick="toggleFavorite()">
+                                <i class="fas fa-heart"></i>
+                                <span>Favoritos</span>
+                            </button>
+                            <button class="video-control-btn" onclick="shareVideo()">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Compartir</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                rightPanel.innerHTML = `
+                    <div class="top-horizontal-box">
+                        <div class="categories-row">
+                            <i class="fas fa-tag"></i>
+                            ${categoriesHTML}
+                        </div>
+                    </div>
+                    ${videoHTML}
+                    ${controlsHTML}
+                `;
+            }
+            
+            // Mostrar temas relacionados
+            renderRelatedTopics(video, allVideos);
+        }
+        
+        // Función para escapar HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Convertir video de la base de datos al formato de tema
+        function convertVideoToTopic(video) {
+            if (!video || !video.videoId || !video.titlePostSingle) {
+                return null;
+            }
+            
+            const categories = (video.categorias && Array.isArray(video.categorias)) 
+                ? video.categorias.map(c => c && c.categoria ? c.categoria : '').filter(c => c).slice(0, 3)
+                : [];
+            const views = parseInt(video.vistas) || 0;
+            const fecha = video.fecha || 'Fecha no disponible';
+            
+            return {
+                id: video.videoId,
+                title: video.titlePostSingle,
+                categories: categories,
+                author: 'LatamSX',
+                date: fecha,
+                views: views
+            };
+        }
+        
+        // Obtener temas aleatorios excluyendo el video actual
+        function getRandomTopicsExcluding(currentVideoId, allVideos, count) {
+            if (!allVideos || allVideos.length === 0) {
+                return [];
+            }
+            
+            // Filtrar videos válidos y excluir el video actual
+            const validVideos = allVideos.filter(v => 
+                v && 
+                v.videoId && 
+                v.videoId !== currentVideoId &&
+                v.titlePostSingle && 
+                v.fecha
+            );
+            
+            if (validVideos.length === 0) {
+                return [];
+            }
+            
+            // Mezclar aleatoriamente
+            const shuffled = [...validVideos].sort(() => Math.random() - 0.5);
+            
+            // Retornar los primeros 'count' videos
+            return shuffled.slice(0, Math.min(count, shuffled.length));
+        }
+        
+        // Renderizar temas relacionados
+        function renderRelatedTopics(currentVideo, allVideos) {
+            const relatedTopicsList = document.getElementById('related-topics-list');
+            if (!relatedTopicsList) return;
+            
+            const randomVideos = getRandomTopicsExcluding(currentVideo.videoId, allVideos, 5);
+            
+            if (randomVideos.length === 0) {
+                relatedTopicsList.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: #999;">
+                        <p>No hay temas relacionados disponibles</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const topics = randomVideos.map(convertVideoToTopic).filter(t => t !== null);
+            
+            if (topics.length === 0) {
+                relatedTopicsList.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: #999;">
+                        <p>No hay temas válidos para mostrar</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            relatedTopicsList.innerHTML = topics.map(topic => {
+                // Mostrar solo las primeras 3 categorías
+                const displayCategories = topic.categories.slice(0, 3);
+                const categoriesHTML = displayCategories.map((cat, index) => 
+                    `<span class="category-tag">${escapeHtml(cat)}</span>${index < displayCategories.length - 1 ? '<span class="category-separator">|</span>' : ''}`
+                ).join('');
+                
+                return `
+                    <div class="topic-item">
+                        <div class="topic-left">
+                            <div class="topic-info">
+                                <div class="categories-container">
+                                    ${categoriesHTML}
+                                </div>
+                                <h3 class="topic-title">
+                                    <a href="foro.html?id=${escapeHtml(topic.id)}">${escapeHtml(topic.title)}</a>
+                                </h3>
+                                <div class="topic-meta">
+                                    <span class="author">${escapeHtml(topic.author)}</span>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Icon" class="author-icon">
+                                    <span>•</span>
+                                    <span class="date-info">
+                                        <i class="fas fa-calendar"></i>
+                                        ${escapeHtml(topic.date)}
+                                    </span>
+                                    <span class="views-separator">•</span>
+                                    <span class="views-count">
+                                        <i class="fas fa-eye"></i>
+                                        ${topic.views}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+
+        // Variables globales para navegación
+        let allVideosList = [];
+        let currentVideoIndex = -1;
+        let videoHistory = [];
+
+        // Funciones para los botones de control
+        function navigateVideo(direction) {
+            if (!allVideosList || allVideosList.length === 0) {
+                console.log('No hay videos disponibles');
+                return;
+            }
+
+            if (direction === 'prev') {
+                // Retroceder al video anterior del historial
+                if (videoHistory.length > 1) {
+                    videoHistory.pop(); // Eliminar el video actual del historial
+                    const previousVideoId = videoHistory[videoHistory.length - 1];
+                    if (previousVideoId) {
+                        window.location.href = `foro.html?id=${previousVideoId}`;
+                    }
+                } else {
+                    // Si no hay historial, buscar el video anterior en la lista
+                    const currentId = getVideoIdFromURL();
+                    const currentIndex = allVideosList.findIndex(v => v && v.videoId === currentId);
+                    if (currentIndex > 0) {
+                        const prevVideo = allVideosList[currentIndex - 1];
+                        if (prevVideo && prevVideo.videoId) {
+                            // Guardar en historial antes de navegar
+                            saveToHistory(currentId);
+                            window.location.href = `foro.html?id=${prevVideo.videoId}`;
+                        }
+                    }
+                }
+            } else if (direction === 'next') {
+                // Avanzar al siguiente video
+                const currentId = getVideoIdFromURL();
+                const currentIndex = allVideosList.findIndex(v => v && v.videoId === currentId);
+                if (currentIndex >= 0 && currentIndex < allVideosList.length - 1) {
+                    const nextVideo = allVideosList[currentIndex + 1];
+                    if (nextVideo && nextVideo.videoId) {
+                        // Guardar en historial antes de navegar
+                        saveToHistory(currentId);
+                        window.location.href = `foro.html?id=${nextVideo.videoId}`;
+                    }
+                } else {
+                    // Si estamos al final, ir al primero
+                    const firstVideo = allVideosList[0];
+                    if (firstVideo && firstVideo.videoId) {
+                        saveToHistory(currentId);
+                        window.location.href = `foro.html?id=${firstVideo.videoId}`;
+                    }
+                }
+            }
+        }
+
+        // Guardar video en el historial (solo en memoria, sin caché)
+        function saveToHistory(videoId) {
+            if (!videoId) return;
+            
+            // Agregar el video al historial si no es el último
+            if (videoHistory[videoHistory.length - 1] !== videoId) {
+                videoHistory.push(videoId);
+                // Limitar el historial a 50 videos
+                if (videoHistory.length > 50) {
+                    videoHistory = videoHistory.slice(-50);
+                }
+            }
+        }
+
+        // Cargar historial al iniciar (solo en memoria)
+        function loadHistory() {
+            // Agregar el video actual al historial
+            const currentId = getVideoIdFromURL();
+            if (currentId) {
+                saveToHistory(currentId);
+            }
+        }
+
+        function toggleFavorite() {
+            // Esta función se puede implementar más adelante para agregar a favoritos
+            console.log('Toggle favorito');
+        }
+
+        function shareVideo() {
+            const videoTitle = document.querySelector('.video-title')?.textContent || 'Video';
+            const videoUrl = window.location.href;
+            
+            // Intentar usar la API de Web Share si está disponible
+            if (navigator.share) {
+                navigator.share({
+                    title: videoTitle,
+                    text: `Mira este video: ${videoTitle}`,
+                    url: videoUrl
+                }).then(() => {
+                    console.log('Video compartido exitosamente');
+                }).catch(err => {
+                    console.log('Error al compartir:', err);
+                    // Fallback si el usuario cancela o hay error
+                    fallbackShare(videoUrl);
+                });
+            } else {
+                // Fallback: mostrar opciones de compartir
+                fallbackShare(videoUrl);
+            }
+        }
+
+        // Función de fallback para compartir
+        function fallbackShare(url) {
+            // Crear un modal o menú con opciones de compartir
+            const shareOptions = [
+                { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
+                { name: 'Twitter', url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(document.querySelector('.video-title')?.textContent || 'Video')}` },
+                { name: 'WhatsApp', url: `https://wa.me/?text=${encodeURIComponent(url)}` },
+                { name: 'Telegram', url: `https://t.me/share/url?url=${encodeURIComponent(url)}` },
+                { name: 'Copiar enlace', action: 'copy' }
+            ];
+
+            // Mostrar opciones al usuario
+            const choice = confirm('¿Cómo quieres compartir?\n\n1. Facebook\n2. Twitter\n3. WhatsApp\n4. Telegram\n5. Copiar enlace\n\nHaz clic en OK y luego elige la opción en el menú.');
+            
+            // Crear menú de opciones
+            const option = prompt('Elige una opción:\n1. Facebook\n2. Twitter\n3. WhatsApp\n4. Telegram\n5. Copiar enlace\n\nEscribe el número:');
+            
+            if (option) {
+                const index = parseInt(option) - 1;
+                if (index >= 0 && index < shareOptions.length) {
+                    if (shareOptions[index].action === 'copy') {
+                        // Copiar al portapapeles
+                        navigator.clipboard.writeText(url).then(() => {
+                            alert('Enlace copiado al portapapeles');
+                        }).catch(err => {
+                            console.log('Error al copiar:', err);
+                            alert('Error al copiar el enlace');
+                        });
+                    } else {
+                        // Abrir en nueva ventana
+                        window.open(shareOptions[index].url, '_blank');
+                    }
+                }
+            }
+        }
+
+        // Función para buscar por categoría (desde los tags móviles)
+        function searchByCategory(categoryName) {
+            // Redirigir a index.html con búsqueda por categoría
+            window.location.href = `../index.html?search=${encodeURIComponent(categoryName)}`;
+        }
+
+        // Cargar el video cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', () => {
+            loadVideo();
+        });
+    </script>
+    <script src="../database/mediaDB.js"></script>
+    <script src="../Js/header.js"></script>
+</body>
+</html>
+
