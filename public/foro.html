@@ -79,7 +79,7 @@
         .video-player-container {
             width: 100%;
             background: #000;
-            border: 2px solid var(--yellow);
+            border: none;
             border-radius: 0;
             overflow: hidden;
             position: relative;
@@ -370,6 +370,11 @@
                 @media (max-width: 968px) {
                     .forum-content-wrapper {
                         grid-template-columns: 1fr;
+                        width: 100%;
+                        max-width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
                     }
                     
                     .left-panel {
@@ -386,8 +391,10 @@
                     
                     .video-player-container {
                         width: 100%;
+                        max-width: 100%;
                         padding-bottom: 56.25%; /* 16:9 aspect ratio */
                         min-height: auto;
+                        box-sizing: border-box;
                     }
                     
                     .video-player-container.vertical {
@@ -398,10 +405,21 @@
                     .video-player-container iframe {
                         width: 100% !important;
                         height: 100% !important;
+                        max-width: 100%;
+                        box-sizing: border-box;
                     }
                     
                     .right-panel {
                         padding: 0;
+                        width: 100%;
+                        max-width: 100%;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-controls {
+                        padding: 0.8rem;
+                        width: 100%;
+                        box-sizing: border-box;
                     }
                     
                     .video-control-btn {
@@ -416,6 +434,115 @@
                     
                     .video-control-btn i {
                         font-size: 0.8rem;
+                    }
+                }
+
+                /* Estilos para pantallas muy angostas (móviles pequeños) */
+                @media (max-width: 480px) {
+                    .forum-content-wrapper {
+                        width: 100%;
+                        max-width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    .right-panel {
+                        width: 100%;
+                        max-width: 100%;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-player-container {
+                        width: 100%;
+                        max-width: 100%;
+                        margin: 0 auto;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-player-container iframe {
+                        width: 100% !important;
+                        height: 100% !important;
+                        max-width: 100%;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-controls {
+                        padding: 0.6rem;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-control-btn {
+                        padding: 0.35rem 0.6rem;
+                        font-size: 0.7rem;
+                        gap: 0.25rem;
+                    }
+                    
+                    .video-control-btn span {
+                        font-size: 0.7rem;
+                    }
+                    
+                    .main-content .container {
+                        padding: 0 1rem;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                }
+
+                /* Estilos para pantallas extremadamente angostas */
+                @media (max-width: 375px) {
+                    .forum-content-wrapper {
+                        width: 100%;
+                        max-width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    .right-panel {
+                        width: 100%;
+                        max-width: 100%;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-player-container {
+                        width: 100%;
+                        max-width: 100%;
+                        margin: 0 auto;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-controls {
+                        padding: 0.5rem;
+                        flex-wrap: wrap;
+                        gap: 0.4rem;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    
+                    .video-control-btn {
+                        padding: 0.3rem 0.5rem;
+                        font-size: 0.65rem;
+                        flex: 1;
+                        min-width: 0;
+                        gap: 0.2rem;
+                    }
+                    
+                    .video-control-btn span {
+                        font-size: 0.65rem;
+                    }
+                    
+                    .video-control-btn i {
+                        font-size: 0.7rem;
+                    }
+                    
+                    .main-content .container {
+                        padding: 0 0.5rem;
+                        width: 100%;
+                        box-sizing: border-box;
                     }
                 }
     </style>
@@ -1023,4 +1150,3 @@
     <script src="../Js/header.js"></script>
 </body>
 </html>
-
