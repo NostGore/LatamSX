@@ -403,8 +403,8 @@ body.search-active .warning-bar {
     letter-spacing: 1px;
 }
 
-/* Contenedor de Anuncio */
-.ad-container {
+/* Contenedor para Script/Iframe */
+.script-container {
     background: var(--dark-gray);
     padding: 1rem 0;
     text-align: center;
@@ -413,15 +413,15 @@ body.search-active .warning-bar {
     z-index: 1;
 }
 
-.ad-container .container {
+.script-container .container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 50px;
 }
 
-.ad-container iframe,
-.ad-container script {
+.script-container iframe,
+.script-container script {
     max-width: 100%;
     display: block;
     margin: 0 auto;
@@ -1461,16 +1461,16 @@ footer {
         font-size: 0.65rem;
     }
 
-    /* Contenedor de Anuncio - Responsive */
-    .ad-container {
+    /* Contenedor para Script/Iframe - Responsive */
+    .script-container {
         padding: 0.8rem 0;
     }
 
-    .ad-container .container {
+    .script-container .container {
         padding: 0 1rem;
     }
 
-    .ad-container iframe {
+    .script-container iframe {
         width: 100%;
         max-width: 100%;
     }
