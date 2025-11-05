@@ -74,13 +74,6 @@ function loadHeader() {
                 <p>Este sitio es solo para mayores de 18 años</p>
             </div>
         </div>
-
-        <!-- Contenedor de Anuncio -->
-        <div class="ad-container" id="ad-container" style="order: 4;">
-            <div class="container">
-                <script>(function(s){s.dataset.zone='10142874',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-            </div>
-        </div>
     `;
 
     // Insertar el encabezado al inicio del body

@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
     <title>LatamSX - Foro Entretenimiento</title>
     <meta name="description" content="LatamSX es un foro de entretenimiento especial.">
-    <meta name="keywords" content="foro videos, latamsx, compartir videos, videos online, categorías videos, foro latinoamericano">
+    <meta name="keywords"
+        content="foro videos, latamsx, compartir videos, videos online, categorías videos, foro latinoamericano">
     <meta name="author" content="LatamSX">
     <meta name="robots" content="index, follow">
     <meta name="language" content="Spanish">
     <meta name="revisit-after" content="7 days">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://latamsx.site/">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://latamsx.site/">
     <meta property="og:title" content="LatamSX - Foro de Videos">
-    <meta property="og:description" content="LatamSX es un foro moderno para compartir y ver videos. Descubre los mejores temas y categorías organizadas.">
+    <meta property="og:description"
+        content="LatamSX es un foro moderno para compartir y ver videos. Descubre los mejores temas y categorías organizadas.">
     <meta property="og:image" content="https://files.catbox.moe/09rldz.png">
     <meta property="og:locale" content="es_ES">
     <meta property="og:site_name" content="LatamSX">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://latamsx.site/">
     <meta name="twitter:title" content="LatamSX - Foro de Videos">
-    <meta name="twitter:description" content="LatamSX es un foro moderno para compartir y ver videos. Descubre los mejores temas y categorías organizadas.">
+    <meta name="twitter:description"
+        content="LatamSX es un foro moderno para compartir y ver videos. Descubre los mejores temas y categorías organizadas.">
     <meta name="twitter:image" content="https://files.catbox.moe/09rldz.png">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://files.catbox.moe/09rldz.png">
     <link rel="apple-touch-icon" href="https://files.catbox.moe/09rldz.png">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -44,26 +48,34 @@
     <meta name="monetag" content="eb0a7b761cd92cc70191f2ca0471751f">
 
 </head>
+
 <body>
-            <!-- El encabezado se carga dinámicamente desde header.js -->
-            
-            <!-- Botón de Categorías -->
-            <div class="categories-button-container">
-                <div class="container">
-                    <button class="categories-button" id="categories-button">
-                        <i class="fas fa-tags"></i>
-                        <span>Categorías</span>
-                        <i class="fas fa-chevron-down categories-arrow"></i>
-                    </button>
-                    <div class="categories-dropdown-main" id="categories-dropdown-main">
-                        <div class="dropdown-content-main" id="dropdown-content-main">
-                            <!-- Las categorías se generarán aquí dinámicamente -->
-                        </div>
-                    </div>
+    <!-- El encabezado se carga dinámicamente desde header.js -->
+
+    <!-- Contenedor de Anuncio -->
+    <div class="ad-container" id="ad-container" style="order: 4;">
+        <div class="container">
+            <script>(function (s) { s.dataset.zone = '10142874', s.src = 'https://groleegni.net/vignette.min.js' })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+        </div>
+    </div>
+
+    <!-- Botón de Categorías -->
+    <div class="categories-button-container">
+        <div class="container">
+            <button class="categories-button" id="categories-button">
+                <i class="fas fa-tags"></i>
+                <span>Categorías</span>
+                <i class="fas fa-chevron-down categories-arrow"></i>
+            </button>
+            <div class="categories-dropdown-main" id="categories-dropdown-main">
+                <div class="dropdown-content-main" id="dropdown-content-main">
+                    <!-- Las categorías se generarán aquí dinámicamente -->
                 </div>
             </div>
-            
-            <!-- Contenido Principal -->
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
     <main class="main-content">
         <div class="container">
             <div class="content-wrapper">
@@ -72,7 +84,8 @@
                     <!-- Sección: Lo mejor de lo mejor -->
                     <div class="topics-section">
                         <div class="topics-header">
-                            <img src="https://images.emojiterra.com/google/noto-emoji/animated-emoji/1f924.gif" alt="Icono" class="drop-icon">
+                            <img src="https://images.emojiterra.com/google/noto-emoji/animated-emoji/1f924.gif"
+                                alt="Icono" class="drop-icon">
                             <h2 class="topics-title">Lo mejor de lo mejor</h2>
                         </div>
                         <div id="topics-list" class="topics-list">
@@ -83,7 +96,8 @@
                     <!-- Sección: Ultimos agregados -->
                     <div class="topics-section" style="margin-top: 20px;">
                         <div class="topics-header">
-                            <img src="https://i.pinimg.com/originals/e3/c7/31/e3c731807c7f86b2b99c918ea6300d3b.gif" alt="Icono" class="drop-icon">
+                            <img src="https://i.pinimg.com/originals/e3/c7/31/e3c731807c7f86b2b99c918ea6300d3b.gif"
+                                alt="Icono" class="drop-icon">
                             <h2 class="topics-title">Ultimos agregados</h2>
                         </div>
                         <div id="latest-topics-list" class="topics-list">
@@ -158,4 +172,5 @@
     <script src="Js/search.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
