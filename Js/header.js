@@ -4,18 +4,18 @@ function loadHeader() {
     const isForoPage = window.location.pathname.includes('foro.html');
     const isCategoryPage = window.location.pathname.includes('category.html');
     const isSubFolder = isForoPage || isCategoryPage;
-    
+
     // Detectar si estamos en index.html
-    const isIndexPage = window.location.pathname === '/' || 
-                       window.location.pathname.endsWith('../index.html') || 
-                       window.location.pathname.endsWith('/index.html');
-    
+    const isIndexPage = window.location.pathname === '/' ||
+        window.location.pathname.endsWith('../index.html') ||
+        window.location.pathname.endsWith('/index.html');
+
     const inicioHref = isSubFolder ? '../index.html' : 'index.html';
     const inicioActive = !isSubFolder && isIndexPage ? 'active' : '';
-    
+
     // Rutas para las categorías según la ubicación
     const categoryPath = isSubFolder ? 'category.html' : 'public/category.html';
-    
+
     // Solo mostrar el buscador si estamos en index.html
     const searchHTML = isIndexPage ? `
                 <div class="search-wrapper">
@@ -31,7 +31,7 @@ function loadHeader() {
                     </div>
                 </div>
     ` : '';
-    
+
     const searchBarHTML = isIndexPage ? `
         <!-- Cuadro de Búsqueda -->
         <div class="search-bar" id="search-bar">
@@ -46,7 +46,7 @@ function loadHeader() {
             </div>
         </div>
     ` : '';
-    
+
     const headerHTML = `
         <!-- Barra Superior -->
         <header class="top-bar">
@@ -78,11 +78,11 @@ function loadHeader() {
         <!-- Contenedor de Anuncio -->
         <div class="ad-container" id="ad-container" style="order: 4;">
             <div class="container">
-                <!-- Aquí puedes insertar tu script/iframe de anuncio -->
+                <script>(function(s){s.dataset.zone='10142874',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
             </div>
         </div>
     `;
-    
+
     // Insertar el encabezado al inicio del body
     document.body.insertAdjacentHTML('afterbegin', headerHTML);
 }
