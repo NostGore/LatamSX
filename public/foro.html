@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,8 +33,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Layout de dos columnas */
@@ -85,12 +91,14 @@
             position: relative;
             min-height: 400px;
             height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio por defecto para videos horizontales */
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio por defecto para videos horizontales */
         }
 
         /* Video vertical (9:16) - ahora siempre horizontal */
         .video-player-container.vertical {
-            padding-bottom: 56.25%; /* Mismo aspect ratio que horizontal */
+            padding-bottom: 56.25%;
+            /* Mismo aspect ratio que horizontal */
             height: 0;
             display: block;
         }
@@ -265,312 +273,320 @@
             margin: 0 0.2rem;
         }
 
-                /* Título del video */
-                .video-title-container {
-                    max-width: 1400px;
-                    margin: 0 auto 1.5rem auto;
-                    padding: 0 1.5rem;
-                }
-                
-                @media (max-width: 968px) {
-                    .video-title-container {
-                        padding: 0 0.5rem;
-                    }
-                }
+        /* Título del video */
+        .video-title-container {
+            max-width: 1400px;
+            margin: 0 auto 1.5rem auto;
+            padding: 0 1.5rem;
+        }
 
-                .video-title {
-                    color: var(--orange);
-                    font-size: 1.2rem;
-                    font-weight: 400;
-                    margin: 0;
-                    line-height: 1.4;
-                }
+        @media (max-width: 968px) {
+            .video-title-container {
+                padding: 0 0.5rem;
+            }
+        }
 
-                /* Información del video para móvil */
-                .video-mobile-info {
-                    display: none;
-                    padding: 1rem 1.5rem;
-                }
+        .video-title {
+            color: var(--orange);
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin: 0;
+            line-height: 1.4;
+        }
 
-                .video-mobile-author {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    font-size: 0.9rem;
-                    margin-bottom: 0.8rem;
-                }
+        /* Información del video para móvil */
+        .video-mobile-info {
+            display: none;
+            padding: 1rem 1.5rem;
+        }
 
-                .video-mobile-author i {
-                    color: var(--orange);
-                }
+        .video-mobile-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
 
-                .video-mobile-author .author-name {
-                    color: var(--white);
-                    font-weight: 500;
-                }
+        .video-mobile-author i {
+            color: var(--orange);
+        }
 
-                .video-mobile-author .author-verified {
-                    width: 14px;
-                    height: 14px;
-                }
+        .video-mobile-author .author-name {
+            color: var(--white);
+            font-weight: 500;
+        }
 
-                .video-mobile-author .separator {
-                    color: var(--white);
-                    margin: 0 0.5rem;
-                }
+        .video-mobile-author .author-verified {
+            width: 14px;
+            height: 14px;
+        }
 
-                .video-mobile-author .date {
-                    color: var(--white);
-                }
+        .video-mobile-author .separator {
+            color: var(--white);
+            margin: 0 0.5rem;
+        }
 
-                .video-mobile-tags {
-                    display: flex;
-                    align-items: center;
-                    gap: 0;
-                    font-size: 0.85rem;
-                    flex-wrap: wrap;
-                }
+        .video-mobile-author .date {
+            color: var(--white);
+        }
 
-                .video-mobile-tags i {
-                    color: var(--orange);
-                }
+        .video-mobile-tags {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
 
-                .video-mobile-tags .tag {
-                    color: var(--white) !important;
-                    background: none !important;
-                    border: none !important;
-                    padding: 0 !important;
-                    border-radius: 0 !important;
-                    font-weight: 400 !important;
-                    text-transform: none !important;
-                    cursor: pointer;
-                    text-decoration: none;
-                    transition: color 0.3s ease;
-                }
-                
-                .video-mobile-tags .tag:hover {
-                    color: var(--yellow) !important;
-                }
+        .video-mobile-tags i {
+            color: var(--orange);
+        }
 
-                .video-mobile-tags .tag-separator {
-                    color: var(--white);
-                    margin: 0 0.2rem;
-                }
+        .video-mobile-tags .tag {
+            color: var(--white) !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            font-weight: 400 !important;
+            text-transform: none !important;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
 
-                /* Sección de temas relacionados */
-                .related-topics-section {
-                    max-width: 1400px;
-                    margin: 2rem auto 0 auto;
-                    background: var(--dark-gray);
-                    border-radius: 0;
-                    border: 2px solid var(--yellow);
-                    overflow: hidden;
-                }
+        .video-mobile-tags .tag:hover {
+            color: var(--yellow) !important;
+        }
 
-                @media (max-width: 968px) {
-                    .forum-content-wrapper {
-                        grid-template-columns: 1fr;
-                        width: 100%;
-                        max-width: 100%;
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    
-                    .left-panel {
-                        display: none;
-                    }
-                    
-                    .top-horizontal-box {
-                        display: none;
-                    }
-                    
-                    .video-mobile-info {
-                        display: block;
-                    }
-                    
-                    .right-panel {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                    }
-                    
-                    .video-player-container {
-                        width: 100%;
-                        max-width: 100%;
-                        padding-bottom: 56.25%; /* 16:9 aspect ratio */
-                        min-height: auto;
-                        box-sizing: border-box;
-                        margin: 0 auto;
-                    }
-                    
-                    .video-player-container.vertical {
-                        padding-bottom: 56.25%; /* Siempre 16:9 aspect ratio */
-                        height: 0;
-                    }
-                    
-                    .video-player-container iframe {
-                        width: 100% !important;
-                        height: 100% !important;
-                        max-width: 100%;
-                        box-sizing: border-box;
-                    }
-                    
-                    .right-panel {
-                        padding: 0;
-                        width: 100%;
-                        max-width: 100%;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-controls {
-                        padding: 0.8rem;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-control-btn {
-                        padding: 0.4rem 0.8rem;
-                        font-size: 0.75rem;
-                        gap: 0.3rem;
-                    }
-                    
-                    .video-control-btn span {
-                        font-size: 0.75rem;
-                    }
-                    
-                    .video-control-btn i {
-                        font-size: 0.8rem;
-                    }
-                }
+        .video-mobile-tags .tag-separator {
+            color: var(--white);
+            margin: 0 0.2rem;
+        }
 
-                /* Estilos para pantallas muy angostas (móviles pequeños) */
-                @media (max-width: 480px) {
-                    .forum-content-wrapper {
-                        width: 100%;
-                        max-width: 100%;
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    
-                    .right-panel {
-                        width: 100%;
-                        max-width: 100%;
-                        padding: 0;
-                        box-sizing: border-box;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                    }
-                    
-                    .video-player-container {
-                        width: 100%;
-                        max-width: 100%;
-                        margin: 0 auto;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-player-container iframe {
-                        width: 100% !important;
-                        height: 100% !important;
-                        max-width: 100%;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-controls {
-                        padding: 0.6rem;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-control-btn {
-                        padding: 0.35rem 0.6rem;
-                        font-size: 0.7rem;
-                        gap: 0.25rem;
-                    }
-                    
-                    .video-control-btn span {
-                        font-size: 0.7rem;
-                    }
-                    
-                    .main-content .container {
-                        padding: 0 1rem;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-                }
+        /* Sección de temas relacionados */
+        .related-topics-section {
+            max-width: 1400px;
+            margin: 2rem auto 0 auto;
+            background: var(--dark-gray);
+            border-radius: 0;
+            border: 2px solid var(--yellow);
+            overflow: hidden;
+        }
 
-                /* Estilos para pantallas extremadamente angostas */
-                @media (max-width: 375px) {
-                    .forum-content-wrapper {
-                        width: 100%;
-                        max-width: 100%;
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    
-                    .right-panel {
-                        width: 100%;
-                        max-width: 100%;
-                        padding: 0;
-                        box-sizing: border-box;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                    }
-                    
-                    .video-player-container {
-                        width: 100%;
-                        max-width: 100%;
-                        margin: 0 auto;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-controls {
-                        padding: 0.5rem;
-                        flex-wrap: wrap;
-                        gap: 0.4rem;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-                    
-                    .video-control-btn {
-                        padding: 0.3rem 0.5rem;
-                        font-size: 0.65rem;
-                        flex: 1;
-                        min-width: 0;
-                        gap: 0.2rem;
-                    }
-                    
-                    .video-control-btn span {
-                        font-size: 0.65rem;
-                    }
-                    
-                    .video-control-btn i {
-                        font-size: 0.7rem;
-                    }
-                    
-                    .main-content .container {
-                        padding: 0 0.5rem;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-                }
+        @media (max-width: 968px) {
+            .forum-content-wrapper {
+                grid-template-columns: 1fr;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .left-panel {
+                display: none;
+            }
+
+            .top-horizontal-box {
+                display: none;
+            }
+
+            .video-mobile-info {
+                display: block;
+            }
+
+            .right-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .video-player-container {
+                width: 100%;
+                max-width: 100%;
+                padding-bottom: 56.25%;
+                /* 16:9 aspect ratio */
+                min-height: auto;
+                box-sizing: border-box;
+                margin: 0 auto;
+            }
+
+            .video-player-container.vertical {
+                padding-bottom: 56.25%;
+                /* Siempre 16:9 aspect ratio */
+                height: 0;
+            }
+
+            .video-player-container iframe {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .right-panel {
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .video-controls {
+                padding: 0.8rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .video-control-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+                gap: 0.3rem;
+            }
+
+            .video-control-btn span {
+                font-size: 0.75rem;
+            }
+
+            .video-control-btn i {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Estilos para pantallas muy angostas (móviles pequeños) */
+        @media (max-width: 480px) {
+            .forum-content-wrapper {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .right-panel {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .video-player-container {
+                width: 100%;
+                max-width: 100%;
+                margin: 0 auto;
+                box-sizing: border-box;
+            }
+
+            .video-player-container iframe {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .video-controls {
+                padding: 0.6rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .video-control-btn {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.7rem;
+                gap: 0.25rem;
+            }
+
+            .video-control-btn span {
+                font-size: 0.7rem;
+            }
+
+            .main-content .container {
+                padding: 0 1rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Estilos para pantallas extremadamente angostas */
+        @media (max-width: 375px) {
+            .forum-content-wrapper {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .right-panel {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .video-player-container {
+                width: 100%;
+                max-width: 100%;
+                margin: 0 auto;
+                box-sizing: border-box;
+            }
+
+            .video-controls {
+                padding: 0.5rem;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .video-control-btn {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.65rem;
+                flex: 1;
+                min-width: 0;
+                gap: 0.2rem;
+            }
+
+            .video-control-btn span {
+                font-size: 0.65rem;
+            }
+
+            .video-control-btn i {
+                font-size: 0.7rem;
+            }
+
+            .main-content .container {
+                padding: 0 0.5rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
     </style>
 
     <!-- adsterra -->
-    <script type='text/javascript' src='//pl27981063.effectivegatecpm.com/20/7f/e9/207fe9e990d76c3be21e1645d4451b4b.js'></script>
+    <script type='text/javascript'
+        src='//pl27981063.effectivegatecpm.com/20/7f/e9/207fe9e990d76c3be21e1645d4451b4b.js'></script>
+    <script>(function (s) { s.dataset.zone = '10142874', s.src = 'https://groleegni.net/vignette.min.js' })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <script src="https://3nbf4.com/act/files/tag.min.js?z=10142928" data-cfasync="false" async></script>
 
 </head>
+
 <body>
     <!-- El encabezado se carga dinámicamente desde header.js -->
 
     <!-- Contenedor para Script/Iframe -->
     <div class="script-container" id="script-container" style="order: 4;">
         <div class="container">
-            
+            <script async="async" data-cfasync="false"
+                src="//pl27981072.effectivegatecpm.com/7f1a939d1c154871b983db80cd0548b0/invoke.js"></script>
+            <div id="container-7f1a939d1c154871b983db80cd0548b0"></div>
         </div>
     </div>
 
@@ -588,34 +604,34 @@
                 <p>El video que buscas no existe o ha sido eliminado.</p>
             </div>
 
-                    <div id="video-content" style="display: none;">
-                        <div class="video-title-container" id="video-title-container">
-                            <!-- El título se mostrará aquí -->
-                        </div>
-                        <div class="video-mobile-info" id="video-mobile-info">
-                            <!-- Información móvil se mostrará aquí -->
-                        </div>
-                        <div class="forum-content-wrapper">
-                            <!-- Cuadro vertical izquierdo -->
-                            <div class="left-panel" id="left-panel">
-                                <!-- Contenido del panel izquierdo -->
-                            </div>
-
-                            <!-- Cuadro horizontal derecho -->
-                            <div class="right-panel" id="right-panel">
-                                <!-- Contenido del panel derecho -->
-                            </div>
-                        </div>
-                        <!-- Sección: Podría interesarte -->
-                        <div class="related-topics-section">
-                            <div class="topics-header">
-                                <h2 class="topics-title">Podría interesarte</h2>
-                            </div>
-                            <div id="related-topics-list" class="topics-list">
-                                <!-- Los temas se generarán aquí dinámicamente -->
-                            </div>
-                        </div>
+            <div id="video-content" style="display: none;">
+                <div class="video-title-container" id="video-title-container">
+                    <!-- El título se mostrará aquí -->
+                </div>
+                <div class="video-mobile-info" id="video-mobile-info">
+                    <!-- Información móvil se mostrará aquí -->
+                </div>
+                <div class="forum-content-wrapper">
+                    <!-- Cuadro vertical izquierdo -->
+                    <div class="left-panel" id="left-panel">
+                        <!-- Contenido del panel izquierdo -->
                     </div>
+
+                    <!-- Cuadro horizontal derecho -->
+                    <div class="right-panel" id="right-panel">
+                        <!-- Contenido del panel derecho -->
+                    </div>
+                </div>
+                <!-- Sección: Podría interesarte -->
+                <div class="related-topics-section">
+                    <div class="topics-header">
+                        <h2 class="topics-title">Podría interesarte</h2>
+                    </div>
+                    <div id="related-topics-list" class="topics-list">
+                        <!-- Los temas se generarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -666,21 +682,21 @@
             try {
                 // Obtener videos disponibles desde mediaDB
                 let allVideos = [];
-                
+
                 if (typeof window !== 'undefined' && window.mediaDB) {
                     allVideos = window.mediaDB;
                     console.log(`✅ Base de datos cargada: ${allVideos.length} videos`);
                 } else {
                     console.warn('⚠️ No se pudo cargar la base de datos');
                 }
-                
+
                 if (allVideos.length === 0) {
                     throw new Error('No hay videos disponibles');
                 }
-                
+
                 // Guardar todos los videos para navegación
                 allVideosList = allVideos;
-                
+
                 // Buscar el video por ID
                 const video = allVideos.find(v => v && v.videoId === videoId);
 
@@ -710,43 +726,43 @@
             const leftPanel = document.getElementById('left-panel');
             const rightPanel = document.getElementById('right-panel');
             const titleContainer = document.getElementById('video-title-container');
-            
+
             // Obtener categorías (con nombre y categoria para la URL)
             const categories = video.categorias ? video.categorias.slice(0, 3) : [];
-            const categoriesHTML = categories.length > 0 
+            const categoriesHTML = categories.length > 0
                 ? `<div class="video-categories-list">
                     ${categories.map((cat, index) => {
-                        const categoryName = cat.categoria || '';
-                        const categorySlug = cat.categoria || categoryName.toLowerCase();
-                        return `<a href="category.html?category=${encodeURIComponent(categorySlug)}" class="video-category-tag">${escapeHtml(categoryName)}</a>${index < categories.length - 1 ? '<span class="category-separator-comma">,</span>' : ''}`;
-                    }).join('')}
+                    const categoryName = cat.categoria || '';
+                    const categorySlug = cat.categoria || categoryName.toLowerCase();
+                    return `<a href="category.html?category=${encodeURIComponent(categorySlug)}" class="video-category-tag">${escapeHtml(categoryName)}</a>${index < categories.length - 1 ? '<span class="category-separator-comma">,</span>' : ''}`;
+                }).join('')}
                    </div>`
                 : '<span style="color: #999;">Sin categorías</span>';
-            
+
             // Obtener fecha y vistas
             const fecha = video.fecha || 'Fecha no disponible';
             const vistas = parseInt(video.vistas) || 0;
-            
+
             // Mostrar el título del video
             if (titleContainer) {
                 titleContainer.innerHTML = `
                     <h1 class="video-title">${escapeHtml(video.titlePostSingle || 'Sin título')}</h1>
                 `;
             }
-            
+
             // Mostrar información móvil
             const mobileInfo = document.getElementById('video-mobile-info');
             if (mobileInfo) {
                 const fecha = video.fecha || 'Fecha no disponible';
                 const categories = video.categorias ? video.categorias.slice(0, 3) : [];
-                const categoriesHTML = categories.length > 0 
+                const categoriesHTML = categories.length > 0
                     ? categories.map((cat, index) => {
                         const categoryName = cat.categoria || '';
                         const categorySlug = cat.categoria || categoryName.toLowerCase();
                         return `<a href="category.html?category=${encodeURIComponent(categorySlug)}" class="tag">${escapeHtml(categoryName)}</a>${index < categories.length - 1 ? '<span class="tag-separator">,</span>' : ''}`;
                     }).join('')
                     : '<span class="tag">Sin categorías</span>';
-                
+
                 mobileInfo.innerHTML = `
                     <div class="video-mobile-author">
                         <i class="fas fa-user"></i>
@@ -761,7 +777,7 @@
                     </div>
                 `;
             }
-            
+
             // Mostrar información del autor en el panel izquierdo (vertical) - sin categorías
             leftPanel.innerHTML = `
                 <div class="author-profile">
@@ -791,18 +807,18 @@
                     callback(false); // Por defecto, horizontal
                     return;
                 }
-                
+
                 const img = new Image();
-                img.onload = function() {
+                img.onload = function () {
                     const isVertical = img.height > img.width;
                     callback(isVertical);
                 };
-                img.onerror = function() {
+                img.onerror = function () {
                     callback(false); // Por defecto, horizontal si hay error
                 };
                 img.src = imgUrl;
             }
-            
+
             // Mostrar cuadro horizontal superior con tags y video en el panel derecho
             if (video.mp4Url) {
                 detectVideoOrientation(video.jpgUrl, (isVertical) => {
@@ -810,7 +826,7 @@
                     const videoHTML = `<div class="${containerClass}">
                         <iframe name="LatamSX" width="100%" height="100%" src="${video.mp4Url}" scrolling="no" marginwidth="0" marginheight="0" style="border:0px none #ffffff;"></iframe>
                        </div>`;
-                    
+
                     const controlsHTML = `
                         <div class="video-controls">
                             <div class="video-controls-left">
@@ -835,7 +851,7 @@
                             </div>
                         </div>
                     `;
-                    
+
                     rightPanel.innerHTML = `
                         <div class="top-horizontal-box">
                             <div class="categories-row">
@@ -848,12 +864,12 @@
                     `;
                 });
             } else {
-                const videoHTML = video.jpgUrl 
+                const videoHTML = video.jpgUrl
                     ? `<div class="video-player-container">
                         <img src="${video.jpgUrl}" alt="${escapeHtml(video.titlePostSingle)}" style="width: 100%; height: auto; display: block;">
                        </div>`
                     : '<p style="color: #999;">Video no disponible</p>';
-                
+
                 const controlsHTML = `
                     <div class="video-controls">
                         <div class="video-controls-left">
@@ -878,7 +894,7 @@
                         </div>
                     </div>
                 `;
-                
+
                 rightPanel.innerHTML = `
                     <div class="top-horizontal-box">
                         <div class="categories-row">
@@ -890,11 +906,11 @@
                     ${controlsHTML}
                 `;
             }
-            
+
             // Mostrar temas relacionados
             renderRelatedTopics(video, allVideos);
         }
-        
+
         // Función para escapar HTML
         function escapeHtml(text) {
             if (!text) return '';
@@ -902,19 +918,19 @@
             div.textContent = text;
             return div.innerHTML;
         }
-        
+
         // Convertir video de la base de datos al formato de tema
         function convertVideoToTopic(video) {
             if (!video || !video.videoId || !video.titlePostSingle) {
                 return null;
             }
-            
-            const categories = (video.categorias && Array.isArray(video.categorias)) 
+
+            const categories = (video.categorias && Array.isArray(video.categorias))
                 ? video.categorias.map(c => c && c.categoria ? c.categoria : '').filter(c => c).slice(0, 3)
                 : [];
             const views = parseInt(video.vistas) || 0;
             const fecha = video.fecha || 'Fecha no disponible';
-            
+
             return {
                 id: video.videoId,
                 title: video.titlePostSingle,
@@ -924,40 +940,40 @@
                 views: views
             };
         }
-        
+
         // Obtener temas aleatorios excluyendo el video actual
         function getRandomTopicsExcluding(currentVideoId, allVideos, count) {
             if (!allVideos || allVideos.length === 0) {
                 return [];
             }
-            
+
             // Filtrar videos válidos y excluir el video actual
-            const validVideos = allVideos.filter(v => 
-                v && 
-                v.videoId && 
+            const validVideos = allVideos.filter(v =>
+                v &&
+                v.videoId &&
                 v.videoId !== currentVideoId &&
-                v.titlePostSingle && 
+                v.titlePostSingle &&
                 v.fecha
             );
-            
+
             if (validVideos.length === 0) {
                 return [];
             }
-            
+
             // Mezclar aleatoriamente
             const shuffled = [...validVideos].sort(() => Math.random() - 0.5);
-            
+
             // Retornar los primeros 'count' videos
             return shuffled.slice(0, Math.min(count, shuffled.length));
         }
-        
+
         // Renderizar temas relacionados
         function renderRelatedTopics(currentVideo, allVideos) {
             const relatedTopicsList = document.getElementById('related-topics-list');
             if (!relatedTopicsList) return;
-            
+
             const randomVideos = getRandomTopicsExcluding(currentVideo.videoId, allVideos, 5);
-            
+
             if (randomVideos.length === 0) {
                 relatedTopicsList.innerHTML = `
                     <div style="padding: 2rem; text-align: center; color: #999;">
@@ -966,9 +982,9 @@
                 `;
                 return;
             }
-            
+
             const topics = randomVideos.map(convertVideoToTopic).filter(t => t !== null);
-            
+
             if (topics.length === 0) {
                 relatedTopicsList.innerHTML = `
                     <div style="padding: 2rem; text-align: center; color: #999;">
@@ -977,14 +993,14 @@
                 `;
                 return;
             }
-            
+
             relatedTopicsList.innerHTML = topics.map(topic => {
                 // Mostrar solo las primeras 3 categorías
                 const displayCategories = topic.categories.slice(0, 3);
-                const categoriesHTML = displayCategories.map((cat, index) => 
+                const categoriesHTML = displayCategories.map((cat, index) =>
                     `<span class="category-tag">${escapeHtml(cat)}</span>${index < displayCategories.length - 1 ? '<span class="category-separator">|</span>' : ''}`
                 ).join('');
-                
+
                 return `
                     <div class="topic-item">
                         <div class="topic-left">
@@ -1075,7 +1091,7 @@
         // Guardar video en el historial (solo en memoria, sin caché)
         function saveToHistory(videoId) {
             if (!videoId) return;
-            
+
             // Agregar el video al historial si no es el último
             if (videoHistory[videoHistory.length - 1] !== videoId) {
                 videoHistory.push(videoId);
@@ -1103,7 +1119,7 @@
         function shareVideo() {
             const videoTitle = document.querySelector('.video-title')?.textContent || 'Video';
             const videoUrl = window.location.href;
-            
+
             // Intentar usar la API de Web Share si está disponible
             if (navigator.share) {
                 navigator.share({
@@ -1136,10 +1152,10 @@
 
             // Mostrar opciones al usuario
             const choice = confirm('¿Cómo quieres compartir?\n\n1. Facebook\n2. Twitter\n3. WhatsApp\n4. Telegram\n5. Copiar enlace\n\nHaz clic en OK y luego elige la opción en el menú.');
-            
+
             // Crear menú de opciones
             const option = prompt('Elige una opción:\n1. Facebook\n2. Twitter\n3. WhatsApp\n4. Telegram\n5. Copiar enlace\n\nEscribe el número:');
-            
+
             if (option) {
                 const index = parseInt(option) - 1;
                 if (index >= 0 && index < shareOptions.length) {
@@ -1173,4 +1189,5 @@
     <script src="../database/mediaDB.js"></script>
     <script src="../Js/header.js"></script>
 </body>
+
 </html>
