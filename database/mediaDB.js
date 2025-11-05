@@ -482,7 +482,7 @@ const mediaDB = [
                 categoria: "Vídeos HD"
             }
         ],
-        fecha: "Nov  6, 2025",
+        fecha: "Nov  4, 2025",
         vistas: "73917"
     },
     {
@@ -794,7 +794,7 @@ const mediaDB = [
                 categoria: "Vídeos HD"
             }
         ],
-        fecha: "Nov 10, 2025",
+        fecha: "Nov 4, 2025",
         vistas: "21647"
     },
     {
@@ -1195,7 +1195,7 @@ const mediaDB = [
                 categoria: "Vídeos HD"
             }
         ],
-        fecha: "Nov  6, 2025",
+        fecha: "Nov  4, 2025",
         vistas: "94462"
     },
     {

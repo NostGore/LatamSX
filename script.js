@@ -212,7 +212,7 @@ function renderTopics() {
     }).join('');
 }
 
-// Renderizar últimos agregados (5 temas más recientes)
+// Renderizar últimos agregados (8 temas más recientes)
 function renderLatestTopics() {
     if (!latestTopicsList) return;
     
@@ -225,7 +225,7 @@ function renderLatestTopics() {
         return;
     }
     
-    const latestVideos = getLatestTopics(5);
+    const latestVideos = getLatestTopics(8);
     const topics = latestVideos.map(video => {
         const topic = convertVideoToTopic(video);
         if (topic && video.jpgUrl) {
