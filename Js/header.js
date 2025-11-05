@@ -74,6 +74,13 @@ function loadHeader() {
                 <p>Este sitio es solo para mayores de 18 años</p>
             </div>
         </div>
+
+        <!-- Contenedor de Anuncio -->
+        <div class="ad-container" id="ad-container" style="order: 4;">
+            <div class="container">
+                <!-- Aquí puedes insertar tu script/iframe de anuncio -->
+            </div>
+        </div>
     `;
     
     // Insertar el encabezado al inicio del body

@@ -403,6 +403,30 @@ body.search-active .warning-bar {
     letter-spacing: 1px;
 }
 
+/* Contenedor de Anuncio */
+.ad-container {
+    background: var(--dark-gray);
+    padding: 1rem 0;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.ad-container .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50px;
+}
+
+.ad-container iframe,
+.ad-container script {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
 /* Contenedor del botón de categorías */
 .categories-button-container {
     background: var(--dark-gray);
@@ -1435,6 +1459,20 @@ footer {
     .nav-button-wrapper .nav-button {
         padding: 0.3rem 0.6rem;
         font-size: 0.65rem;
+    }
+
+    /* Contenedor de Anuncio - Responsive */
+    .ad-container {
+        padding: 0.8rem 0;
+    }
+
+    .ad-container .container {
+        padding: 0 1rem;
+    }
+
+    .ad-container iframe {
+        width: 100%;
+        max-width: 100%;
     }
 
     .btn-white {
